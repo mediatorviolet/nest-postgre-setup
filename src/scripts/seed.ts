@@ -4,8 +4,11 @@ import { ConnectionOptions, createConnection } from 'typeorm';
 import { ItemService } from '../item/item.service';
 import { Item } from '../model/item.entity';
 import { ItemDto } from '../item/dto/item.dto';
+import { User } from '../user.decorator';
 
 async function run() {
+  const seedUser: User = { id: 'seed-user' };
+
   const seedId = Date.now()
     .toString()
     .split('')
@@ -28,7 +31,9 @@ async function run() {
       }),
     )
     .map((dto) =>
-      itemService.create(dto).then((r) => (console.log('done ->', r.name), r)),
+      itemService
+        .create(dto, seedUser)
+        .then((r) => (console.log('done ->', r.name), r)),
     );
 
   return await Promise.all(work);

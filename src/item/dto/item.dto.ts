@@ -1,6 +1,7 @@
 import { ApiModelProperty } from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
 import { IsString, IsUUID } from 'class-validator';
 import { Item } from '../../model/item.entity';
+import { User } from "../../user.decorator";
 
 export class ItemDto implements Readonly<ItemDto> {
   @ApiModelProperty({ required: true })
@@ -31,14 +32,14 @@ export class ItemDto implements Readonly<ItemDto> {
     });
   }
 
-  public static toEntity(entity: ItemDto) {
+  public static toEntity(entity: ItemDto, user: User = null) {
     const it = new Item();
     it.id = entity.id;
     it.name = entity.name;
     it.description = entity.description;
     it.createDateTime = new Date();
-    it.createdBy = 'antoine';
-    it.lastChangedBy = 'antoine';
+    it.createdBy = user ? user.id : null;
+    it.lastChangedBy = user ? user.id : null;
     return it;
   }
 }

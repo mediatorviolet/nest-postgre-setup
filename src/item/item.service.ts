@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Item } from '../model/item.entity';
 import { Repository } from 'typeorm';
 import { ItemDto } from './dto/item.dto';
+import { User } from '../user.decorator';
 
 @Injectable()
 export class ItemService {
@@ -16,9 +17,9 @@ export class ItemService {
       .then((items) => items.map((e) => ItemDto.fromEntity(e)));
   }
 
-  public async create(dto: ItemDto): Promise<ItemDto> {
+  public async create(dto: ItemDto, user: User): Promise<ItemDto> {
     return this.repo
-      .save(ItemDto.toEntity(dto))
+      .save(ItemDto.toEntity(dto, user))
       .then((e) => ItemDto.fromEntity(e));
   }
 }

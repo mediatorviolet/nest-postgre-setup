@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ItemService } from './item.service';
 import { ItemDto } from './dto/item.dto';
+import { User } from '../user.decorator';
 
 @Controller('item')
 export class ItemController {
@@ -12,7 +13,7 @@ export class ItemController {
   }
 
   @Post()
-  public async post(@Body() dto: ItemDto): Promise<ItemDto> {
-    return this.serv.create(dto);
+  public async post(@Body() dto: ItemDto, user: User): Promise<ItemDto> {
+    return this.serv.create(dto, user);
   }
 }
